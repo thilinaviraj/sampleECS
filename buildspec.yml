@@ -11,6 +11,7 @@ phases:
       - REPOSITORY_URI=151803697644.dkr.ecr.us-east-2.amazonaws.com/hello-world
       - IMAGE_TAG=${COMMIT_HASH:=latest}
       - AWS_ACCOUNT_ID=151803697644
+      - IMAGE= 151803697644.dkr.ecr.us-east-2.amazonaws.com/hello-world:latest
   build:
     commands:
       - echo Build started on `date`
@@ -29,7 +30,7 @@ phases:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
       - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)    
-      - printf {"name":"container_name","imageUri":"151803697644.dkr.ecr.us-east-2.amazonaws.com/hello-world:latest"} > imageDetail.json
+      - printf {"ImageURI":"$IMAGE"} > imageDetail.json
       #- printf '{"CONTAINER_NAME":"%s"}' 151803697644.dkr.ecr.us-east-2.amazonaws.com/hello-world:latest  > imageDetail.json
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
       #- printf '[{"name":"CONTAINER_NAME","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG  > imageDetail.json
