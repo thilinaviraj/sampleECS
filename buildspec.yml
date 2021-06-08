@@ -22,15 +22,16 @@ phases:
       #- docker tag hello-world:latest 151803697644.dkr.ecr.us-east-2.amazonaws.com/hello-world:latest
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
       #- docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG            
-      - printf '{"CONTAINER_NAME":"%s"}' 151803697644.dkr.ecr.us-east-2.amazonaws.com/hello-world:latest  > imageDetail.json
+      - printf '[{"name":"container_name","imageUri":"151803697644.dkr.ecr.us-east-2.amazonaws.com/hello-world:latest"}]':latest
 
       
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)      
-      - printf '{"CONTAINER_NAME":"%s"}' 151803697644.dkr.ecr.us-east-2.amazonaws.com/hello-world:latest  > imageDetail.json
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)    
+      - printf '[{"name":"container_name","imageUri":151803697644.dkr.ecr.us-east-2.amazonaws.com/hello-world:latest}]' > imageDetail.json
+      #- printf '{"CONTAINER_NAME":"%s"}' 151803697644.dkr.ecr.us-east-2.amazonaws.com/hello-world:latest  > imageDetail.json
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
       #- printf '[{"name":"CONTAINER_NAME","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG  > imageDetail.json
       - sed -i 's/<APP_NAME>/'$IMAGE_REPO_NAME'/g' appspec.yml taskdef.json
