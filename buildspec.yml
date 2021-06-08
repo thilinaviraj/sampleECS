@@ -22,7 +22,7 @@ phases:
       #- docker tag hello-world:latest 151803697644.dkr.ecr.us-east-2.amazonaws.com/hello-world:latest
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
       #- docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG            
-      - printf '151803697644.dkr.ecr.us-east-2.amazonaws.com/hello-world: latest'
+      #- printf '151803697644.dkr.ecr.us-east-2.amazonaws.com/hello-world: latest'
       
   post_build:
     commands:
