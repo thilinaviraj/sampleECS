@@ -19,8 +19,8 @@ phases:
       - docker login -u thilina950 -p Abcd@9876
       - docker build -t $REPOSITORY_URI:latest .
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
-      - printf '{"ImageURI":"image_URI"}' > imageDetail.json
-      - printf '[{"name":"container_name","imageUri":"image_URI"}]' > imagedefinitions.json
+      #- printf '{"ImageURI":"image_URI"}' > imageDetail.json
+      #- printf '[{"name":"container_name","imageUri":"image_URI"}]' > imagedefinitions.json
   post_build:
     commands:
       - echo Build completed on `date`
