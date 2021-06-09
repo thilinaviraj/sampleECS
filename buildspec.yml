@@ -27,8 +27,12 @@ phases:
       - echo Pushing the Docker image...
       - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)    
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
-      - printf '[{"name":"ImageURI","imageUri":"%s"}]' $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG > imagedefinitions.json
-
+      - printf '[{"name":"ImageURI","imageUri":"%s"}]' $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG > imageDetail.json
+      - ImageURI=$(cat imageDetail.json | jq -r '.ImageURI')
+      - printf '[{"name":"CONTAINER_NAME","imageUri":"IMAGE_URI"}]' > imagedefinitions.json
+      - sed -i -e "s|CONTAINER_NAME|$ContainerName|g" imagedefinitions.json
+      - sed -i -e "s|IMAGE_URI|$ImageURI|g" imagedefinitions.json
+      - cat imagedefinitions.json
 
       - sed -i 's/<APP_NAME>/'$IMAGE_REPO_NAME'/g' appspec.yml taskdef.json
       - sed -i 's/<SERVICE_PORT>/'$SERVICE_PORT'/g' appspec.yml taskdef.json
